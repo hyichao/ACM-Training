@@ -23,6 +23,7 @@ vector<string> split(const std::string& s, const std::string& c)
   return v;
 }
 
+
 vector<int> splitToInts(const std::string& s, const std::string& c) {
   
   vector<string> v = split(s,c);
@@ -32,6 +33,16 @@ vector<int> splitToInts(const std::string& s, const std::string& c) {
   }
   return ret;
 }
+
+vector<long> splitToLongs(const std::string& s, const std::string& c) {
+  vector<string> v = split(s,c);
+  vector<long> ret;
+  for(int i=0;i<v.size(); i++) {
+    ret.push_back(stol(v[i]));
+  }
+  return ret;
+}
+
 
 string reverse(string input) {
 

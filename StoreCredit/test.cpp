@@ -7,12 +7,14 @@
 
 using namespace std;
 
+vector<int> indexOfFitPrice(int credit, vector<int> prices);
+
 #ifndef DEBUG
 #define DEBUG false
 #endif
 
 //problem change, directory change
-static const string directory = "MinimunScalarProduct/";
+static const string directory = "StoreCredit/";
 
 //input
 static const string inputFileName = "A-large-practice.in.txt";
@@ -42,19 +44,6 @@ void printResult(int caseNum, string out) {
 	}
 }
 
-long long minimun(vector<long> vec1, vector<long> vec2) {
-
-	sort(vec1.begin(),vec1.end());
-	sort(vec2.begin(),vec2.end(),std::greater<long>());
-	
-	long long min=0;
-	for(int i=0; i<vec1.size(); i++) {
-		min += (long long)vec1[i] * vec2[i];
-	}
-	return min;
-}
-
-
 int main() {
 
   	string num = getNewLine();
@@ -63,16 +52,19 @@ int main() {
 
   	for(int i=0;i<n;i++) {
 	  	
-	  	string line = getNewLine();
+	  	string creditStr = getNewLine();
+  		int credit = std::stoi(creditStr);
+
+  		string itemStr = getNewLine();
+  		int item = std::stoi(itemStr);
+
+  		string pricesStr = getNewLine();
+  		vector<int> prices = splitToInts(pricesStr," ");
+
+  		vector<int> twoPrice = indexOfFitPrice(credit, prices);
   		
-	  	string vec1Lie = getNewLine();
-	  	vector<long> vec1 = splitToLongs(vec1Lie, " ");
-	  	string vec2Line = getNewLine();
-	  	vector<long> vec2 = splitToLongs(vec2Line, " ");
-  		
-  		long long result = minimun(vec1,vec2);
-  		string out = to_string(result);
-  		printResult(i+1,out);
+  		string out = to_string(twoPrice[0]) + " " + to_string(twoPrice[1]);
+  		printResult(i,out);
   	}
 
   	return 0;
@@ -80,7 +72,20 @@ int main() {
 
 
 
+vector<int> indexOfFitPrice(int credit, vector<int> prices) {
 
+	vector<int> result;
+	for(int i=0; i<prices.size(); i++) {
+		for(int j=i+1; j<prices.size(); j++) {
+			if(prices[i]+prices[j] == credit) {
+				result.push_back(i+1);
+				result.push_back(j+1);
+			}
+		}
+	}
+
+	return result;
+}
 
 
 
