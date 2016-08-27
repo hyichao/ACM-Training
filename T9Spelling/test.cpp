@@ -12,7 +12,7 @@ using namespace std;
 #endif
 
 //problem change, directory change
-static const string directory = "RopeIntranet/";
+static const string directory = "MinimunScalarProduct/";
 
 //input
 static const string inputFileName = "A-large-practice.in.txt";
@@ -42,44 +42,35 @@ void printResult(int caseNum, string out) {
 	}
 }
 
+long long minimun(vector<long> vec1, vector<long> vec2) {
 
-int intersection(vector<pair<int,int> > lines) {
-
-	int count = 0;
-	for(int i=0;i<lines.size();i++) {
-		for(int j=i;j<lines.size();j++) {
-			int diffA = lines[i].first-lines[j].first;
-			int diffB = lines[i].second-lines[j].second;
-			if(diffA * diffB < 0) {
-				count++;
-			}
-		}
+	sort(vec1.begin(),vec1.end());
+	sort(vec2.begin(),vec2.end(),std::greater<long>());
+	
+	long long min=0;
+	for(int i=0; i<vec1.size(); i++) {
+		min += (long long)vec1[i] * vec2[i];
 	}
-	return count;
+	return min;
 }
 
 
 int main() {
 
-  	string testcase = getNewLine();
+  	string num = getNewLine();
   	
-  	int test = std::stoi(testcase);
+  	int n = std::stoi(num);
 
-  	for(int i=0;i<test;i++) {
+  	for(int i=0;i<n;i++) {
 	  	
-	  	string nRope = getNewLine();
-	  	int n = std::stoi(nRope);
+	  	string line = getNewLine();
   		
-  		vector<pair<int,int> > lines;
-	  	
-	  	for(int j=0;j<n;j++) {
-		  	string vecLine = getNewLine();
-		  	vector<int> vec = splitToInts(vecLine, " ");
-		  	lines.push_back(std::make_pair(vec[0],vec[1]));
-	  	}
-
-	  	int result = intersection(lines);
+	  	string vec1Lie = getNewLine();
+	  	vector<long> vec1 = splitToLongs(vec1Lie, " ");
+	  	string vec2Line = getNewLine();
+	  	vector<long> vec2 = splitToLongs(vec2Line, " ");
   		
+  		long long result = minimun(vec1,vec2);
   		string out = to_string(result);
   		printResult(i+1,out);
   	}
