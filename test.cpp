@@ -4,12 +4,20 @@
 #include <map>
 #include <fstream>
 
-#include "stringUtil.h"
-
 using namespace std;
 
+//useful functions
+string getNewLine();
+void printResult(int caseNum, string out);
+
+vector<string> split(const std::string& s, const std::string& c);
+vector<int> splitToInts(const std::string& s, const std::string& c);
+vector<long> splitToLongs(const std::string& s, const std::string& c);
+string reverse(string input);
+
+
 #ifndef DEBUG
-#define DEBUG false
+#define DEBUG true
 #endif
 
 //problem change, directory change
@@ -23,6 +31,27 @@ ifstream inputfile(directory+inputFileName);
 static const string resultFileName = "result.txt";
 ofstream outputfile(directory+resultFileName);
 
+//core implementation
+int main() {
+
+  	string testcase = getNewLine();
+  	
+  	int test = std::stoi(testcase);
+
+  	for(int i=0;i<test;i++) {
+	  	
+	  	string nk = getNewLine();
+	  	
+
+	  	int result = 0;
+  		string out = to_string(result);
+  		printResult(i+1,out);
+  	}
+
+  	return 0;
+}
+
+//basic io
 string getNewLine() {
 	string ret;
   	if (DEBUG) {
@@ -43,80 +72,61 @@ void printResult(int caseNum, string out) {
 	}
 }
 
-int extraMkdirs(map<string,bool> existed, map<string,bool> wanted) {
+// useful functions implementation
+vector<string> split(const std::string& s, const std::string& c) {
+  vector<string> v;
+  std::string::size_type pos1, pos2;
+  pos2 = s.find(c);
+  pos1 = 0;
+  while(std::string::npos != pos2)
+  {
+    v.push_back(s.substr(pos1, pos2-pos1));
+ 
+    pos1 = pos2 + c.size();
+    pos2 = s.find(c, pos1);
+  }
+  if(pos1 != s.length())
+    v.push_back(s.substr(pos1));
 
-	int count = 0;
-	for(auto want : wanted) {
-		if(existed[want.first] != true) {
-			count ++;
-		}
-	}
-	return count;
+  return v;
 }
 
-vector<string> analyze(string path) {
+vector<int> splitToInts(const std::string& s, const std::string& c) {
+  
+  vector<string> v = split(s,c);
+  vector<int> ret;
+  for(int i=0; i<v.size();i++) {
+    ret.push_back(stoi(v[i]));
+  }
+  return ret;
+}
 
-	vector<string> ret;
-	ret.push_back(path);
-	for(int i=path.length()-1; i>0; i--) {
-		if(path[i]!='/'){
-			continue;
-		}
-		path = path.substr(0,i);
-		ret.push_back(path);
-	}
-	return ret;
+vector<long> splitToLongs(const std::string& s, const std::string& c) {
+  vector<string> v = split(s,c);
+  vector<long> ret;
+  for(int i=0;i<v.size(); i++) {
+    ret.push_back(stol(v[i]));
+  }
+  return ret;
 }
 
 
-int main() {
+string reverse(string input) {
 
-  	string testcase = getNewLine();
-  	
-  	int test = std::stoi(testcase);
+    vector<string> words = split(input," ");
 
-  	for(int i=0;i<test;i++) {
-	  	
-	  	string nm = getNewLine();
-	  	vector<int> vec = splitToInts(nm," ");
-	  	int n = vec[0];
-	  	int m = vec[1];
-  		
-  		vector<string> existPaths;
-  		for(int i=0;i<n;i++) {
-  			string path = getNewLine();
-  			existPaths.push_back(path);
-  		}
+    vector<string> reverseWords;
+    int size = words.size();
+    for(int i=0; i<size; i++) {
+    	reverseWords.push_back(words[size-i-1]);
+    }
 
-  		vector<string> wantedPaths;
-  		for(int i=0;i<m;i++) {
-  			string path = getNewLine();
-  			wantedPaths.push_back(path);
-  		}
-
-  		map<string,bool> exist;
-  		for(string path: existPaths) {
-  			vector<string> ret = analyze(path);
-  			for(string r: ret) {
-  				exist[r] = true;
-  			}
-  		}
-
-  		map<string,bool> wanted;
-  		for(string path: wantedPaths) {
-			vector<string> ret = analyze(path);
-  			for(string r: ret) {
-  				wanted[r] = true;
-  			}
-  		}
-
-	  	int result = extraMkdirs(exist,wanted);
-  		
-  		string out = to_string(result);
-  		printResult(i+1,out);
-  	}
-
-  	return 0;
+    string ret = "";
+    for(int i=0; i<size; i++){
+    	ret += reverseWords[i];
+    	ret += " "; 
+    }
+    return ret;
 }
 
 
