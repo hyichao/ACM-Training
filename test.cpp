@@ -31,7 +31,9 @@ ifstream inputfile(directory+inputFileName);
 static const string resultFileName = "result.txt";
 ofstream outputfile(directory+resultFileName);
 
-//core implementation
+/*
+core implementation area
+*/
 int main() {
 
   	string testcase = getNewLine();
@@ -51,7 +53,11 @@ int main() {
   	return 0;
 }
 
-//basic io
+/*
+basic io
+getNewLine() for input, need following procesing on string
+printResult() for output.
+*/
 string getNewLine() {
 	string ret;
   	if (DEBUG) {
@@ -72,7 +78,11 @@ void printResult(int caseNum, string out) {
 	}
 }
 
-// useful functions implementation
+/*
+useful functions implementation
+split(), as its name tells
+splitToInts() & splitToLongs()
+*/
 vector<string> split(const std::string& s, const std::string& c) {
   vector<string> v;
   std::string::size_type pos1, pos2;
